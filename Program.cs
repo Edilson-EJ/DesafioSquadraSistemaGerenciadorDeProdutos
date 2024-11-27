@@ -1,7 +1,12 @@
+using SistemaGerenciadorDeProdutos.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<IUsuarioInterface, UsuarioService>();
+builder.Services.AddScoped<IProdutoInterface, ProdutoService>();
 
 var app = builder.Build();
 
