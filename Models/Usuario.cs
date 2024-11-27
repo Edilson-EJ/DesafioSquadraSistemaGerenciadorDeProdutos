@@ -17,7 +17,7 @@
             _nome = nome;
             _email = email;
             _senha = senha;
-            _funcao = funcao;
+            SetFuncao(funcao);
         }
 
         // Getters e Setters públicos
@@ -32,6 +32,13 @@
         public void SetSenhaHash(string senhaHash) => _senha = senhaHash;
 
         public string GetFuncao() => _funcao;
-        public void SetFuncao(string funcao) => _funcao = funcao;
+        public void SetFuncao(string funcao)
+        {
+            if (funcao != "Gerente" && funcao != "Funcionario")
+            {
+                throw new ArgumentException("Função inválida. Permitido apenas 'Gerente' ou 'Funcionario'.");
+            }
+            _funcao = funcao;
+        }
     }
 }
