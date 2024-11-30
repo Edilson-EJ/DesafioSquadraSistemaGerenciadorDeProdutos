@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using SistemaGerenciadorDeProdutos.Models;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using SistemaGerenciadorDeProdutos.Services;
+using System.Threading.Tasks;
 
 namespace SistemaGerenciadorDeProdutos.Controllers
 {
@@ -12,32 +9,24 @@ namespace SistemaGerenciadorDeProdutos.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginModel login)
+        private readonly IAuthService _authService;
+
+        public AuthController(IAuthService authService)
         {
-            // Aqui você deve validar o usuário com seu repositório de dados
-            // Para fins de demonstração, estamos assumindo que o login foi bem-sucedido
+            _authService = authService;
+        }
 
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("sua_chave_secreta"));
-            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginModel login)
+        {
+            var token = await _authService.Authenticate(login.Email, login.Password);
 
-            var claims = new[]
+            if (token == null)
             {
-                new Claim(ClaimTypes.Name, login.Username),
-                new Claim(ClaimTypes.Role, "Funcionario") // Aqui você pode definir o papel (Role) do usuário
-            };
+                return Unauthorized("Email ou senha inválidos.");
+            }
 
-            var tokenOptions = new JwtSecurityToken(
-                issuer: "seu_issuer",
-                audience: "seu_audience",
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(30),
-                signingCredentials: signinCredentials
-            );
-
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-
-            return Ok(new { Token = tokenString });
+            return Ok(new { Token = token });
         }
     }
 }

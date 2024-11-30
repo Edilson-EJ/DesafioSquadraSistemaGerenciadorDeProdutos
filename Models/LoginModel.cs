@@ -2,13 +2,13 @@
 {
     public class LoginModel
     {
-        public string Username { get; set; }
+        public string Email { get; set; }
         public string Password { get; set; }
 
         // Construtor para inicializar as propriedades
-        public LoginModel(string username, string password)
+        public LoginModel(string email, string password)
         {
-            Username = username;
+            Email = email;
             Password = password;
         }
     }

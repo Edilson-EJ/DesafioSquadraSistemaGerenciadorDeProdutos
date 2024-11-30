@@ -1,4 +1,6 @@
-﻿using SistemaGerenciadorDeProdutos.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SistemaGerenciadorDeProdutos.Data;
+using SistemaGerenciadorDeProdutos.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,57 +9,48 @@ namespace SistemaGerenciadorDeProdutos.Services
 {
     public class ProdutoService : IProdutoInterface
     {
-        private readonly List<Produto> _produtos;
+        private readonly AppDbContext _context;
 
-        public ProdutoService()
+        public ProdutoService(AppDbContext context)
         {
-            _produtos = new List<Produto>();
+            _context = context;
         }
 
         // Obter todos os produtos
-        public Task<IEnumerable<Produto>> ObterTodosProdutos()
+        public async Task<IEnumerable<Produto>> ObterTodosProdutos()
         {
-            return Task.FromResult(_produtos.AsEnumerable());
+            return await _context.Produtos.ToListAsync();
         }
 
         // Obter um produto pelo ID
-        public Task<Produto?> ObterProdutoPorId(int id)
+        public async Task<Produto?> ObterProdutoPorId(int id)
         {
-            var produto = _produtos.FirstOrDefault(p => p.GetId() == id);
-            return Task.FromResult(produto);
+            return await _context.Produtos.FindAsync(id);
         }
 
         // Adicionar um novo produto
-        public Task AdicionarProduto(Produto produto)
+        public async Task AdicionarProduto(Produto produto)
         {
-            _produtos.Add(produto);
-            return Task.CompletedTask;
+            _context.Produtos.Add(produto);
+            await _context.SaveChangesAsync();
         }
 
         // Atualizar um produto existente
-        public Task AtualizarProduto(Produto produto)
+        public async Task AtualizarProduto(Produto produto)
         {
-            var produtoExistente = _produtos.FirstOrDefault(p => p.GetId() == produto.GetId());
-            if (produtoExistente != null)
-            {
-                produtoExistente.SetNome(produto.GetNome());
-                produtoExistente.SetDescricao(produto.GetDescricao());
-                produtoExistente.SetStatus(produto.GetStatus());
-                produtoExistente.SetPreco(produto.GetPreco());
-                produtoExistente.SetQuantidadeEstoque(produto.GetQuantidadeEstoque());
-            }
-            return Task.CompletedTask;
+            _context.Produtos.Update(produto);
+            await _context.SaveChangesAsync();
         }
 
         // Excluir um produto pelo ID
-        public Task ExcluirProduto(int id)
+        public async Task ExcluirProduto(int id)
         {
-            var produto = _produtos.FirstOrDefault(p => p.GetId() == id);
+            var produto = await _context.Produtos.FindAsync(id);
             if (produto != null)
             {
-                _produtos.Remove(produto);
+                _context.Produtos.Remove(produto);
+                await _context.SaveChangesAsync();
             }
-            return Task.CompletedTask;
         }
     }
 }

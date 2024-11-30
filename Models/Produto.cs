@@ -2,41 +2,27 @@
 {
     public class Produto
     {
-        private int _id;
-        private string _nome = string.Empty;
-        private string? _descricao;
-        private string _status = "Em estoque";
-        private decimal _preco;
-        private int _quantidadeEstoque;
+        // Propriedades públicas para mapeamento do Entity Framework
+        public int Id { get; set; }
+        public string Nome { get; set; } = string.Empty;
+        public string? Descricao { get; set; }
+        public string Status { get; set; } = "Em estoque";
+        public decimal Preco { get; set; }
+        public int QuantidadeEstoque { get; set; }
 
         // Construtor
         public Produto() { }
 
         public Produto(int id, string nome, string? descricao, decimal preco, int quantidadeEstoque, string status = "Em estoque")
         {
-            _id = id;
-            _nome = nome;
-            _descricao = descricao;
-            _preco = preco;
-            _quantidadeEstoque = quantidadeEstoque;
-            _status = status;
+            Id = id;
+            Nome = nome;
+            Descricao = descricao;
+            Preco = preco;
+            QuantidadeEstoque = quantidadeEstoque;
+            Status = status;
         }
 
-        // Getters e Setters públicos
-        public int GetId() => _id;
-        public string GetNome() => _nome;
-        public void SetNome(string nome) => _nome = nome;
-
-        public string? GetDescricao() => _descricao;
-        public void SetDescricao(string? descricao) => _descricao = descricao;
-
-        public string GetStatus() => _status;
-        public void SetStatus(string status) => _status = status;
-
-        public decimal GetPreco() => _preco;
-        public void SetPreco(decimal preco) => _preco = preco;
-
-        public int GetQuantidadeEstoque() => _quantidadeEstoque;
-        public void SetQuantidadeEstoque(int quantidade) => _quantidadeEstoque = quantidade;
+        // Métodos (Getters e Setters não são necessários com propriedades públicas)
     }
 }

@@ -48,7 +48,7 @@ namespace SistemaGerenciadorDeProdutos.Controllers
         public async Task<ActionResult<Produto>> PostProduto(Produto produto)
         {
             await _produtoService.AdicionarProduto(produto);
-            return CreatedAtAction(nameof(GetProduto), new { id = produto.GetId() }, produto);
+            return CreatedAtAction(nameof(GetProduto), new { id = produto.Id }, produto);
         }
 
         // PUT: api/produto/{id}
@@ -56,7 +56,7 @@ namespace SistemaGerenciadorDeProdutos.Controllers
         [Authorize(Roles = "Gerente, Funcionario")]
         public async Task<IActionResult> PutProduto(int id, Produto produto)
         {
-            if (id != produto.GetId())
+            if (id != produto.Id)
             {
                 return BadRequest();
             }

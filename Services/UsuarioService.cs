@@ -1,4 +1,6 @@
 ﻿using BCrypt.Net;
+using Microsoft.EntityFrameworkCore;
+using SistemaGerenciadorDeProdutos.Data;
 using SistemaGerenciadorDeProdutos.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,63 +10,50 @@ namespace SistemaGerenciadorDeProdutos.Services
 {
     public class UsuarioService : IUsuarioInterface
     {
-        private readonly List<Usuario> _usuarios;
+        private readonly AppDbContext _context;
 
-        public UsuarioService()
+        public UsuarioService(AppDbContext context)
         {
-            _usuarios = new List<Usuario>
-            {
-                new Usuario(1, "Gerente", "gerente@example.com", BCrypt.Net.BCrypt.HashPassword("senha123"), "Gerente"),
-                new Usuario(2, "Funcionario", "funcionario@example.com", BCrypt.Net.BCrypt.HashPassword("senha123"), "Funcionario")
-            };
+            _context = context;
         }
 
-        public Task<IEnumerable<Usuario>> ObterTodosUsuarios()
+        public async Task<IEnumerable<Usuario>> ObterTodosUsuarios()
         {
-            return Task.FromResult(_usuarios.AsEnumerable());
+            return await _context.Usuarios.ToListAsync();
         }
 
-        public Task<Usuario?> ObterUsuarioPorId(int id)
+        public async Task<Usuario?> ObterUsuarioPorId(int id)
         {
-            var usuario = _usuarios.FirstOrDefault(u => u.GetId() == id);
-            return Task.FromResult(usuario);
+            return await _context.Usuarios.FindAsync(id);
         }
 
-        public Task<Usuario?> ObterUsuarioPorEmail(string email)
+        public async Task<Usuario?> ObterUsuarioPorEmail(string email)
         {
-            var usuario = _usuarios.FirstOrDefault(u => u.GetEmail() == email);
-            return Task.FromResult(usuario);
+            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public Task AdicionarUsuario(Usuario usuario)
+        public async Task AdicionarUsuario(Usuario usuario)
         {
-            ValidarFuncao(usuario.GetFuncao());
-            _usuarios.Add(usuario);
-            return Task.CompletedTask;
+            ValidarFuncao(usuario.Funcao);
+            _context.Usuarios.Add(usuario);
+            await _context.SaveChangesAsync();
         }
 
-        public Task AtualizarUsuario(Usuario usuario)
+        public async Task AtualizarUsuario(Usuario usuario)
         {
-            ValidarFuncao(usuario.GetFuncao());
-            var usuarioExistente = _usuarios.FirstOrDefault(u => u.GetId() == usuario.GetId());
-            if (usuarioExistente != null)
-            {
-                usuarioExistente.SetNome(usuario.GetNome());
-                usuarioExistente.SetEmail(usuario.GetEmail());
-                usuarioExistente.SetSenhaHash(usuario.GetSenhaHash());
-                usuarioExistente.SetFuncao(usuario.GetFuncao());
-            }
-            return Task.CompletedTask;
+            ValidarFuncao(usuario.Funcao);
+            _context.Usuarios.Update(usuario);
+            await _context.SaveChangesAsync();
         }
 
-        public Task ExcluirUsuario(int id)
+        public async Task ExcluirUsuario(int id)
         {
-            var usuario = _usuarios.FirstOrDefault(u => u.GetId() == id);
+            var usuario = await _context.Usuarios.FindAsync(id);
             if (usuario != null)
             {
-                _usuarios.Remove(usuario);
+                _context.Usuarios.Remove(usuario);
+                await _context.SaveChangesAsync();
             }
-            return Task.CompletedTask;
         }
 
         private void ValidarFuncao(string funcao)

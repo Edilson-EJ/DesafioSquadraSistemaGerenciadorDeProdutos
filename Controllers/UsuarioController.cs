@@ -44,14 +44,14 @@ namespace SistemaGerenciadorDeProdutos.Controllers
         public async Task<ActionResult<Usuario>> PostUsuario([FromBody] Usuario usuario)
         {
             await _usuarioService.AdicionarUsuario(usuario);
-            return CreatedAtAction(nameof(GetUsuario), new { id = usuario.GetId() }, usuario);
+            return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Id }, usuario);
         }
 
         // PUT: api/usuario/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUsuario(int id, [FromBody] Usuario usuario)
         {
-            if (id != usuario.GetId())
+            if (id != usuario.Id)
             {
                 return BadRequest();
             }

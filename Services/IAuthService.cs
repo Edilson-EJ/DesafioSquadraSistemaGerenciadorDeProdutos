@@ -2,6 +2,6 @@
 {
     public interface IAuthService
     {
-        Task<string?> Authenticate(string username, string password);
+        Task<string?> Authenticate(string email, string password);
     }
 }
