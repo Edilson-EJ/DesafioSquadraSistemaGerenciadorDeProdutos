@@ -19,7 +19,7 @@ namespace SistemaGerenciadorDeProdutos.Controllers
         }
 
         // GET: api/produto
-        [HttpGet]
+        [HttpGet("getProduto")]
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Produto>>> GetProdutos()
         {
@@ -28,7 +28,7 @@ namespace SistemaGerenciadorDeProdutos.Controllers
         }
 
         // GET: api/produto/{id}
-        [HttpGet("{id}")]
+        [HttpGet("getDetailProduto/{id}")]
         [AllowAnonymous]
         public async Task<ActionResult<Produto>> GetProduto(int id)
         {
@@ -43,7 +43,7 @@ namespace SistemaGerenciadorDeProdutos.Controllers
         }
 
         // POST: api/produto
-        [HttpPost]
+        [HttpPost("postProduto")]
         [Authorize(Roles = "Gerente, Funcionario")]
         public async Task<ActionResult<Produto>> PostProduto(Produto produto)
         {
@@ -52,7 +52,7 @@ namespace SistemaGerenciadorDeProdutos.Controllers
         }
 
         // PUT: api/produto/{id}
-        [HttpPut("{id}")]
+        [HttpPut("updateProduto/{id}")]
         [Authorize(Roles = "Gerente, Funcionario")]
         public async Task<IActionResult> PutProduto(int id, Produto produto)
         {
@@ -67,7 +67,7 @@ namespace SistemaGerenciadorDeProdutos.Controllers
         }
 
         // DELETE: api/produto/{id}
-        [HttpDelete("{id}")]
+        [HttpDelete("deleteProduto/{id}")]
         [Authorize(Roles = "Gerente")]
         public async Task<IActionResult> DeleteProduto(int id)
         {

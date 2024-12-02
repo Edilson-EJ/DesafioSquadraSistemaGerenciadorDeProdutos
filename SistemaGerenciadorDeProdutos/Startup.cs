@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SistemaGerenciadorDeProdutos.Data;
 using SistemaGerenciadorDeProdutos.Services;
+using System.Globalization;
 using System.Text;
 using Microsoft.OpenApi.Models;
 
@@ -14,6 +15,14 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAllOrigins", builder =>
+            {
+                builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+            });
+        });
+
         // Configurar DbContext
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -42,7 +51,8 @@ public class Startup
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = jwtSettings.GetValue<string>("Issuer"),
                 ValidAudience = jwtSettings.GetValue<string>("Audience"),
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+                ClockSkew = TimeSpan.Zero
             };
         });
 
@@ -105,16 +115,33 @@ public class Startup
 
         app.UseRouting();
 
+        app.UseCors("AllowAllOrigins");
+
         // Adicionar o middleware Swagger
         app.UseSwagger();
         app.UseSwaggerUI(c =>
         {
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sistema Gerenciador de Produtos API V1");
-            c.RoutePrefix = string.Empty; // Faz com que o Swagger seja acessado na raiz: http://localhost:<porta>/
+            c.RoutePrefix = string.Empty;
         });
 
         app.UseAuthentication();
         app.UseAuthorization();
+
+        // Configurar a cultura e o fuso horário para Brasília
+        var brasiliaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+        var dateTimeFormat = new DateTimeFormatInfo
+        {
+            ShortDatePattern = "dd/MM/yyyy",
+            LongTimePattern = "HH:mm:ss"
+        };
+        var cultureInfo = new CultureInfo("pt-BR")
+        {
+            DateTimeFormat = dateTimeFormat
+        };
+
+        CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+        CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
         app.UseEndpoints(endpoints =>
         {

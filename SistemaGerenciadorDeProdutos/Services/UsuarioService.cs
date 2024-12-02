@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using SistemaGerenciadorDeProdutos.Data;
 using SistemaGerenciadorDeProdutos.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SistemaGerenciadorDeProdutos.Services
@@ -35,6 +34,7 @@ namespace SistemaGerenciadorDeProdutos.Services
         public async Task AdicionarUsuario(Usuario usuario)
         {
             ValidarFuncao(usuario.Funcao);
+            usuario.SenhaHash = BCrypt.Net.BCrypt.HashPassword(usuario.SenhaHash); // Hashear a senha antes de salvar
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
         }

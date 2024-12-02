@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SistemaGerenciadorDeProdutos.Models;
 using SistemaGerenciadorDeProdutos.Services;
 using System.Collections.Generic;
@@ -18,7 +19,8 @@ namespace SistemaGerenciadorDeProdutos.Controllers
         }
 
         // GET: api/usuario
-        [HttpGet]
+        [HttpGet("getUsuario")]
+        //[Authorize(Roles = "Gerente, Funcionario")]
         public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
         {
             var usuarios = await _usuarioService.ObterTodosUsuarios();
@@ -26,7 +28,8 @@ namespace SistemaGerenciadorDeProdutos.Controllers
         }
 
         // GET: api/usuario/{id}
-        [HttpGet("{id}")]
+        [HttpGet("getUsuarioDetail/{id}")]
+        [Authorize(Roles = "Gerente, Funcionario")]
         public async Task<ActionResult<Usuario>> GetUsuario(int id)
         {
             var usuario = await _usuarioService.ObterUsuarioPorId(id);
@@ -40,7 +43,8 @@ namespace SistemaGerenciadorDeProdutos.Controllers
         }
 
         // POST: api/usuario
-        [HttpPost]
+        [HttpPost("postUsuario")]
+        //[Authorize(Roles = "Gerente")]
         public async Task<ActionResult<Usuario>> PostUsuario([FromBody] Usuario usuario)
         {
             await _usuarioService.AdicionarUsuario(usuario);
@@ -48,7 +52,8 @@ namespace SistemaGerenciadorDeProdutos.Controllers
         }
 
         // PUT: api/usuario/{id}
-        [HttpPut("{id}")]
+        [HttpPut("updateUsuario/{id}")]
+        //[Authorize(Roles = "Gerente")]
         public async Task<IActionResult> PutUsuario(int id, [FromBody] Usuario usuario)
         {
             if (id != usuario.Id)
@@ -62,7 +67,8 @@ namespace SistemaGerenciadorDeProdutos.Controllers
         }
 
         // DELETE: api/usuario/{id}
-        [HttpDelete("{id}")]
+        [HttpDelete("deteleUsuario/{id}")]
+        [Authorize(Roles = "Gerente")]
         public async Task<IActionResult> DeleteUsuario(int id)
         {
             var usuario = await _usuarioService.ObterUsuarioPorId(id);

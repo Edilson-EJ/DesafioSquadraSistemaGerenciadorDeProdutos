@@ -1,14 +1,14 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using BCrypt.Net;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SistemaGerenciadorDeProdutos.Data;
 using SistemaGerenciadorDeProdutos.Models;
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
 namespace SistemaGerenciadorDeProdutos.Services
 {
@@ -34,13 +34,13 @@ namespace SistemaGerenciadorDeProdutos.Services
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, usuario.Nome),
+                new Claim(ClaimTypes.Email, usuario.Email),
                 new Claim(ClaimTypes.Role, usuario.Funcao)
             };
 
             var jwtSettings = _configuration.GetSection("JwtSettings");
             var secretKey = jwtSettings.GetValue<string>("SecretKey");
 
-            // Verificação de nulo
             if (string.IsNullOrEmpty(secretKey))
             {
                 throw new InvalidOperationException("A chave secreta JWT não está configurada.");
@@ -53,7 +53,7 @@ namespace SistemaGerenciadorDeProdutos.Services
                 issuer: jwtSettings.GetValue<string>("Issuer"),
                 audience: jwtSettings.GetValue<string>("Audience"),
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(jwtSettings.GetValue<int>("ExpireMinutes")),
+                expires: DateTime.UtcNow.AddMinutes(jwtSettings.GetValue<int>("ExpireMinutes")), 
                 signingCredentials: creds
             );
 
