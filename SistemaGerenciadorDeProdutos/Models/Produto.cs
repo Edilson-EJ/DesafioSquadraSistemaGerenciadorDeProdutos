@@ -23,6 +23,6 @@
             Status = status;
         }
 
-        // Métodos (Getters e Setters não são necessários com propriedades públicas)
+        
     }
 }

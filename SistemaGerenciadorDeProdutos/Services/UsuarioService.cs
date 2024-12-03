@@ -34,7 +34,7 @@ namespace SistemaGerenciadorDeProdutos.Services
         public async Task AdicionarUsuario(Usuario usuario)
         {
             ValidarFuncao(usuario.Funcao);
-            usuario.SenhaHash = BCrypt.Net.BCrypt.HashPassword(usuario.SenhaHash); // Hashear a senha antes de salvar
+            usuario.SenhaHash = BCrypt.Net.BCrypt.HashPassword(usuario.SenhaHash); 
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
         }
@@ -58,10 +58,11 @@ namespace SistemaGerenciadorDeProdutos.Services
 
         private void ValidarFuncao(string funcao)
         {
-            if (funcao != "Gerente" && funcao != "Funcionario")
+            if (funcao != "Gerente" && funcao != "Funcionario" && funcao != "gerente" && funcao != "funcionario")
             {
                 throw new ArgumentException("Função inválida. Permitido apenas 'Gerente' ou 'Funcionario'.");
             }
         }
+
     }
 }

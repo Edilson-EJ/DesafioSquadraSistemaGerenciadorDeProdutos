@@ -52,7 +52,20 @@ public class Startup
                 ValidIssuer = jwtSettings.GetValue<string>("Issuer"),
                 ValidAudience = jwtSettings.GetValue<string>("Audience"),
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
-                ClockSkew = TimeSpan.Zero
+                ClockSkew = TimeSpan.Zero 
+            };
+            options.Events = new JwtBearerEvents
+            {
+                OnAuthenticationFailed = context =>
+                {
+                    Console.WriteLine($"Erro de autenticação: {context.Exception.Message}");
+                    return Task.CompletedTask;
+                },
+                OnTokenValidated = context =>
+                {
+                    Console.WriteLine("Token validado com sucesso.");
+                    return Task.CompletedTask;
+                }
             };
         });
 
@@ -149,6 +162,6 @@ public class Startup
         });
 
         // Chamar método de inicialização
-        DataInitializer.Seed(context);
+        //DataInitializer.Seed(context);
     }
 }

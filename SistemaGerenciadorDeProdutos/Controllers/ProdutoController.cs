@@ -44,7 +44,7 @@ namespace SistemaGerenciadorDeProdutos.Controllers
 
         // POST: api/produto
         [HttpPost("postProduto")]
-        [Authorize(Roles = "Gerente, Funcionario")]
+        //[Authorize(Roles = "Gerente, Funcionario")]
         public async Task<ActionResult<Produto>> PostProduto(Produto produto)
         {
             await _produtoService.AdicionarProduto(produto);
@@ -53,7 +53,7 @@ namespace SistemaGerenciadorDeProdutos.Controllers
 
         // PUT: api/produto/{id}
         [HttpPut("updateProduto/{id}")]
-        [Authorize(Roles = "Gerente, Funcionario")]
+        //[Authorize(Roles = "Gerente, Funcionario")]
         public async Task<IActionResult> PutProduto(int id, Produto produto)
         {
             if (id != produto.Id)
