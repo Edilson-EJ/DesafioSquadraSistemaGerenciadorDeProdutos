@@ -21,6 +21,9 @@ namespace SistemaGerenciadorDeProdutos
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+
+                    // Defina a URL para usar a porta 5000
+                    webBuilder.UseUrls("http://localhost:5000");
                 });
     }
 }
