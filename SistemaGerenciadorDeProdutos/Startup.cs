@@ -15,19 +15,24 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        // Configuração de CORS
         services.AddCors(options =>
         {
-            options.AddPolicy("AllowAllOrigins", builder =>
+            options.AddPolicy("AllowAngularApp", builder =>
             {
-                builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                builder
+                    .WithOrigins("http://localhost:4200") 
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
             });
         });
 
-        // Configurar DbContext
+        // Configura o DbContext
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-        // Configurar JWT
+        // Configuração de autenticação JWT
         var jwtSettings = Configuration.GetSection("JwtSettings");
         var secretKey = jwtSettings.GetValue<string>("SecretKey");
 
@@ -52,8 +57,10 @@ public class Startup
                 ValidIssuer = jwtSettings.GetValue<string>("Issuer"),
                 ValidAudience = jwtSettings.GetValue<string>("Audience"),
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
-                ClockSkew = TimeSpan.Zero 
+                ClockSkew = TimeSpan.Zero
             };
+
+            // Eventos de autenticação
             options.Events = new JwtBearerEvents
             {
                 OnAuthenticationFailed = context =>
@@ -69,9 +76,10 @@ public class Startup
             };
         });
 
+        // Configurações de Controllers
         services.AddControllers();
 
-        // Configurar Swagger
+        // Configuração do Swagger
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo
@@ -80,7 +88,6 @@ public class Startup
                 Version = "v1"
             });
 
-            // Configurar JWT para Swagger
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
@@ -90,29 +97,31 @@ public class Startup
             });
 
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
             {
+                new OpenApiSecurityScheme
                 {
-                    new OpenApiSecurityScheme
+                    Reference = new OpenApiReference
                     {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    new string[] {}
-                }
-            });
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                new string[] {}
+            }
+        });
         });
 
-        // Configurar serviços
+        // Injeção de dependências
         services.AddScoped<IUsuarioInterface, UsuarioService>();
         services.AddScoped<IProdutoInterface, ProdutoService>();
         services.AddScoped<IAuthService, AuthService>();
     }
 
+
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppDbContext context)
     {
+        // Configurações de ambiente
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
@@ -123,14 +132,31 @@ public class Startup
             app.UseHsts();
         }
 
-        app.UseHttpsRedirection();
-        app.UseStaticFiles();
-
+        // Autenticação e Autorização
+        app.UseAuthentication();
+        // Configuração de rotas
         app.UseRouting();
+        // Use a política CORS definida
+        app.UseCors("AllowAngularApp");
+        app.UseAuthorization();
+        // Configuração de endpoints
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+        });
 
+        // Redirecionamento HTTPS
+        //app.UseHttpsRedirection();
+
+        // Arquivos estáticos
+        //app.UseStaticFiles();
+
+        
+
+        // CORS
         app.UseCors("AllowAllOrigins");
 
-        // Adicionar o middleware Swagger
+        // Configuração do Swagger
         app.UseSwagger();
         app.UseSwaggerUI(c =>
         {
@@ -138,10 +164,9 @@ public class Startup
             c.RoutePrefix = string.Empty;
         });
 
-        app.UseAuthentication();
-        app.UseAuthorization();
+        
 
-        // Configurar a cultura e o fuso horário para Brasília
+        // Configuração de cultura e fuso horário
         var brasiliaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
         var dateTimeFormat = new DateTimeFormatInfo
         {
@@ -156,12 +181,9 @@ public class Startup
         CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
         CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapControllers();
-        });
+        
 
-        // Chamar método de inicialização
-        //DataInitializer.Seed(context);
+        // Seed de dados (caso necessário)
+        // DataInitializer.Seed(context);
     }
 }

@@ -29,7 +29,7 @@ namespace SistemaGerenciadorDeProdutos.Services
             var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
             if (usuario == null || !BCrypt.Net.BCrypt.Verify(password, usuario.SenhaHash))
             {
-                return null; // Credenciais inválidas
+                return null;
             }
 
             // Criação dos Claims
@@ -45,6 +45,9 @@ namespace SistemaGerenciadorDeProdutos.Services
                 // Recupera as configurações do JWT
                 var jwtSettings = _configuration.GetSection("JwtSettings");
                 var secretKey = jwtSettings.GetValue<string>("SecretKey");
+
+                // Adicione logs para verificar valores
+                Console.WriteLine("Chave secreta do appsettings.json: " + secretKey);
 
                 if (string.IsNullOrEmpty(secretKey))
                 {
@@ -69,7 +72,10 @@ namespace SistemaGerenciadorDeProdutos.Services
                 var jwtToken = tokenHandler.WriteToken(token);
 
                 // Logando a estrutura do token gerado
-                Console.WriteLine("Token gerado: " + jwtToken); 
+                Console.WriteLine("Token gerado: " + jwtToken);
+
+                // Logando a chave usada na geração do token para comparação
+                Console.WriteLine("Chave secreta usada para assinar o token: " + secretKey);
 
                 // Verifique a estrutura do JWT
                 if (string.IsNullOrEmpty(jwtToken) || !jwtToken.Contains('.'))
