@@ -20,11 +20,18 @@ namespace SistemaGerenciadorDeProdutos.Controllers
 
         // GET: api/usuario
         [HttpGet("getUsuario")]
-        //[Authorize(Roles = "Gerente, Funcionario")]
+        [Authorize(Roles = "Gerente, Funcionario")]
         public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
         {
-            var usuarios = await _usuarioService.ObterTodosUsuarios();
-            return Ok(usuarios);
+            try
+            {
+                var usuarios = await _usuarioService.ObterTodosUsuarios();
+                return Ok(usuarios);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, $"Erro interno: {ex.Message}");
+            }
         }
 
         // GET: api/usuario/{id}
@@ -32,54 +39,85 @@ namespace SistemaGerenciadorDeProdutos.Controllers
         [Authorize(Roles = "Gerente, Funcionario")]
         public async Task<ActionResult<Usuario>> GetUsuario(int id)
         {
-            var usuario = await _usuarioService.ObterUsuarioPorId(id);
-
-            if (usuario == null)
+            try
             {
-                return NotFound();
-            }
+                var usuario = await _usuarioService.ObterUsuarioPorId(id);
 
-            return Ok(usuario);
+                if (usuario == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(usuario);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, $"Erro interno: {ex.Message}");
+            }
         }
 
         // POST: api/usuario
         [HttpPost("postUsuario")]
-        //[Authorize(Roles = "Gerente")]
+        [Authorize(Roles = "Gerente")]
         public async Task<ActionResult<Usuario>> PostUsuario([FromBody] Usuario usuario)
         {
-            await _usuarioService.AdicionarUsuario(usuario);
-            return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Id }, usuario);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                await _usuarioService.AdicionarUsuario(usuario);
+                return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Id }, usuario);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, $"Erro interno: {ex.Message}");
+            }
         }
 
         // PUT: api/usuario/{id}
         [HttpPut("updateUsuario/{id}")]
-        //[Authorize(Roles = "Gerente")]
+        [Authorize(Roles = "Gerente")]
         public async Task<IActionResult> PutUsuario(int id, [FromBody] Usuario usuario)
         {
-            if (id != usuario.Id)
+            if (id != usuario.Id || !ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            await _usuarioService.AtualizarUsuario(usuario);
-
-            return NoContent();
+            try
+            {
+                await _usuarioService.AtualizarUsuario(usuario);
+                return NoContent();
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, $"Erro interno: {ex.Message}");
+            }
         }
 
         // DELETE: api/usuario/{id}
-        [HttpDelete("deteleUsuario/{id}")]
+        [HttpDelete("deleteUsuario/{id}")]
         [Authorize(Roles = "Gerente")]
         public async Task<IActionResult> DeleteUsuario(int id)
         {
-            var usuario = await _usuarioService.ObterUsuarioPorId(id);
-            if (usuario == null)
+            try
             {
-                return NotFound();
+                var usuario = await _usuarioService.ObterUsuarioPorId(id);
+                if (usuario == null)
+                {
+                    return NotFound();
+                }
+
+                await _usuarioService.ExcluirUsuario(id);
+                return NoContent();
             }
-
-            await _usuarioService.ExcluirUsuario(id);
-
-            return NoContent();
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, $"Erro interno: {ex.Message}");
+            }
         }
     }
 }

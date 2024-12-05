@@ -1,0 +1,22 @@
+<h1>Cadastro de Produto</h1>
+<form #produtoForm="ngForm" (ngSubmit)="onSubmit(produtoForm)">
+  <label for="nome">Nome:</label>
+  <input id="nome" name="nome" type="text" ngModel required />
+
+  <label for="descricao">Descrição:</label>
+  <textarea id="descricao" name="descricao" ngModel></textarea>
+
+  <label for="status">Status:</label>
+  <select id="status" name="status" ngModel>
+    <option value="Em estoque">Em estoque</option>
+    <option value="Fora de estoque">Fora de estoque</option>
+  </select>
+
+  <label for="preco">Preço:</label>
+  <input id="preco" name="preco" type="number" step="0.01" ngModel required />
+
+  <label for="quantidadeEstoque">Quantidade em Estoque:</label>
+  <input id="quantidadeEstoque" name="quantidadeEstoque" type="number" ngModel required />
+
+  <button type="submit">Cadastrar Produto</button>
+</form>

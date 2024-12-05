@@ -1,0 +1,98 @@
+/* Estilo para o título */
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h2 {
+  margin-bottom: 15px;
+}
+
+/* Estilo da tabela */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f4f4f4;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  tr:hover {
+    background-color: #f1f1f1;
+  }
+}
+
+/* Estilo para os botões */
+button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+
+  &.btn-update {
+    background-color: #28a745;
+    color: white;
+
+    &:hover {
+      background-color: #218838;
+    }
+  }
+
+  &.btn-delete {
+    background-color: #dc3545;
+    color: white;
+
+    &:hover {
+      background-color: #c82333;
+    }
+  }
+
+  &.btn-add {
+    background-color: #007bff;
+    color: white;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  table {
+    font-size: 14px;
+  }
+
+  button {
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+/* Estilos para o botão de logout */
+.btn-logout {
+  background-color: #f44336; /* Cor de fundo vermelha */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.btn-logout:hover {
+  background-color: #d32f2f; /* Cor de fundo ao passar o mouse */
+}

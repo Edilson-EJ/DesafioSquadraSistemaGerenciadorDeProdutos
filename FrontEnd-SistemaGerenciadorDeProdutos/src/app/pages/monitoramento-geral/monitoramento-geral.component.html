@@ -1,0 +1,62 @@
+<h1>Monitoramento Geral</h1>
+
+<!-- Botão de Logout -->
+<button (click)="onLogout()" class="btn-logout">Sair</button>
+
+
+<div *ngIf="userRole === 'gerente' || userRole === 'Gerente'">
+
+  <h2>Usuários</h2>
+  <button (click)="onAddUsuario()" class="btn-add">Adicionar Usuário</button>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let usuario of usuarios">
+        <td>{{ usuario.id }}</td>
+        <td>{{ usuario.nome }}</td>
+        <td>{{ usuario.email }}</td>
+        <td>
+          <button (click)="onUpdateUsuario(usuario.id)" class="btn-update">Atualizar</button>
+          <button (click)="onDeleteUsuario(usuario.id)" class="btn-delete">Deletar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>Produtos</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Descrição</th>
+      <th>Status</th>
+      <th>Preço</th>
+      <th>Quantidade</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let produto of produtos">
+      <td>{{ produto.id }}</td>
+      <td>{{ produto.nome }}</td>
+      <td>{{ produto.descricao }}</td>
+      <td>{{ produto.status }}</td>
+      <td>{{ produto.preco | currency }}</td>
+      <td>{{ produto.quantidadeEstoque }}</td>
+      <td>
+        <button (click)="onUpdateProduto(produto.id)" class="btn-update">Atualizar</button>
+        <button *ngIf="userRole === 'gerente' || userRole === 'Gerente' " (click)="onDeleteProduto(produto.id)"
+          class="btn-delete">Deletar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

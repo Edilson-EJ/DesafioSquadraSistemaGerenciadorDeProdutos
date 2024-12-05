@@ -3,6 +3,7 @@ import { AuthAPIService } from '../../services/auth-api.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { LoginModel } from '../../models/loginModel';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -16,20 +17,23 @@ export class LoginComponent {
   token: string | null = null;
   error: string | null = null;
 
-  constructor(private authAPIService: AuthAPIService) {}
+  constructor(private authAPIService: AuthAPIService, private router: Router) {}
 
   login(): void {
-    // Envia o objeto loginModel ao serviço
     this.authAPIService.login(this.loginModel).subscribe(
       (response) => {
-        this.token = response.token;
-        console.log('Login bem-sucedido:', response.token);
+        const token = response.token;
+        this.authAPIService.storeToken(token);
+
+        console.log('Login bem-sucedido:', token);
         this.error = null;
+
+        // Redireciona para a página de monitoramento
+        this.router.navigate(['/monitoramento']);
       },
       (err) => {
         console.error('Erro ao fazer login:', err);
         this.error = err.error || 'Credenciais inválidas.';
-        this.token = null;
       }
     );
   }
