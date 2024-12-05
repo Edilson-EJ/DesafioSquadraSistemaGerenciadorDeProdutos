@@ -1,0 +1,56 @@
+<div class="cadastro-container">
+  <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
+    <h1>Cadastro de Usuário</h1>
+
+    <!-- Campo Nome -->
+    <div>
+      <label for="nome">Nome</label>
+      <input id="nome" type="text" formControlName="nome" placeholder="Digite o nome do usuário" />
+      <div *ngIf="cadastroForm.get('nome')?.invalid && cadastroForm.get('nome')?.touched">
+        O nome é obrigatório e deve ter no mínimo 3 caracteres.
+      </div>
+    </div>
+
+    <!-- Campo Email -->
+    <div>
+      <label for="email">E-mail</label>
+      <input id="email" type="email" formControlName="email" placeholder="Digite o e-mail do usuário" />
+      <div *ngIf="cadastroForm.get('email')?.invalid && cadastroForm.get('email')?.touched">
+        Digite um e-mail válido.
+      </div>
+    </div>
+
+    <!-- Campo Senha -->
+    <div>
+      <label for="senha">Senha</label>
+      <input id="senha" type="password" formControlName="senha" placeholder="Digite uma senha" />
+      <div *ngIf="cadastroForm.get('senha')?.invalid && cadastroForm.get('senha')?.touched">
+        A senha é obrigatória e deve ter no mínimo 6 caracteres.
+      </div>
+    </div>
+
+    <!-- Campo Função -->
+    <div>
+      <label for="funcao">Função</label>
+      <select id="funcao" formControlName="funcao">
+        <option value="" disabled>Selecione uma função</option>
+        <option value="Funcionario">Funcionário</option>
+        <option value="Gerente">Gerente</option>
+      </select>
+      <div *ngIf="cadastroForm.get('funcao')?.invalid && cadastroForm.get('funcao')?.touched">
+        A função é obrigatória.
+      </div>
+    </div>
+
+    <!-- Mensagem de erro -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Botões de Ações -->
+    <div class="form-actions">
+      <button type="submit" [disabled]="cadastroForm.invalid">Cadastrar</button>
+      <button type="button" (click)="onCancel()">Cancelar</button>
+    </div>
+  </form>
+</div>

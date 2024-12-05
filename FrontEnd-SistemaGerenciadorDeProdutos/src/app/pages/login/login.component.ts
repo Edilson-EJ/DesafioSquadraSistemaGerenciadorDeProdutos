@@ -28,8 +28,7 @@ export class LoginComponent {
         console.log('Login bem-sucedido:', token);
         this.error = null;
 
-        // Redireciona para a página de monitoramento
-        this.router.navigate(['/monitoramento']);
+        this.router.navigate(['/monitoramento-geral']);
       },
       (err) => {
         console.error('Erro ao fazer login:', err);
