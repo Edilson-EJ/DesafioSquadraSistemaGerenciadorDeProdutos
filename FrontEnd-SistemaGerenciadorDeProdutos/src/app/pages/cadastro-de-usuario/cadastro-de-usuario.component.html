@@ -2,7 +2,6 @@
   <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
     <h1>Cadastro de Usuário</h1>
 
-    <!-- Campo Nome -->
     <div>
       <label for="nome">Nome</label>
       <input id="nome" type="text" formControlName="nome" placeholder="Digite o nome do usuário" />
@@ -11,7 +10,7 @@
       </div>
     </div>
 
-    <!-- Campo Email -->
+
     <div>
       <label for="email">E-mail</label>
       <input id="email" type="email" formControlName="email" placeholder="Digite o e-mail do usuário" />
@@ -20,7 +19,7 @@
       </div>
     </div>
 
-    <!-- Campo Senha -->
+
     <div>
       <label for="senha">Senha</label>
       <input id="senha" type="password" formControlName="senha" placeholder="Digite uma senha" />
@@ -29,7 +28,7 @@
       </div>
     </div>
 
-    <!-- Campo Função -->
+
     <div>
       <label for="funcao">Função</label>
       <select id="funcao" formControlName="funcao">
@@ -42,12 +41,12 @@
       </div>
     </div>
 
-    <!-- Mensagem de erro -->
+
     <div *ngIf="errorMessage" class="error-message">
       {{ errorMessage }}
     </div>
 
-    <!-- Botões de Ações -->
+
     <div class="form-actions">
       <button type="submit" [disabled]="cadastroForm.invalid">Cadastrar</button>
       <button type="button" (click)="onCancel()">Cancelar</button>

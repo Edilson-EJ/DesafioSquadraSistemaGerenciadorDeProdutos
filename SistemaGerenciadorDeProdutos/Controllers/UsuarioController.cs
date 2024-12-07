@@ -18,7 +18,7 @@ namespace SistemaGerenciadorDeProdutos.Controllers
             _usuarioService = usuarioService;
         }
 
-        // GET: api/usuario
+        // GET: /api/Usuario/getUsuario
         [HttpGet("getUsuario")]
         [Authorize(Roles = "Gerente, Funcionario")]
         public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
@@ -34,7 +34,7 @@ namespace SistemaGerenciadorDeProdutos.Controllers
             }
         }
 
-        // GET: api/usuario/{id}
+        // GET: /api/Usuario/getUsuarioDetail/{id}
         [HttpGet("getUsuarioDetail/{id}")]
         [Authorize(Roles = "Gerente, Funcionario")]
         public async Task<ActionResult<Usuario>> GetUsuario(int id)
@@ -56,7 +56,7 @@ namespace SistemaGerenciadorDeProdutos.Controllers
             }
         }
 
-        // POST: api/usuario
+        // POST: /api/Usuario/postUsuario
         [HttpPost("postUsuario")]
         [Authorize(Roles = "Gerente")]
         public async Task<ActionResult<Usuario>> PostUsuario([FromBody] Usuario usuario)
@@ -77,7 +77,7 @@ namespace SistemaGerenciadorDeProdutos.Controllers
             }
         }
 
-        // PUT: api/usuario/{id}
+        // PUT: /api/Usuario/updateUsuario/{id}
         [HttpPut("updateUsuario/{id}")]
         [Authorize(Roles = "Gerente")]
         public async Task<IActionResult> PutUsuario(int id, [FromBody] Usuario usuario)
@@ -98,7 +98,7 @@ namespace SistemaGerenciadorDeProdutos.Controllers
             }
         }
 
-        // DELETE: api/usuario/{id}
+        // DELETE: /api/Usuario/deleteUsuario/{id}
         [HttpDelete("deleteUsuario/{id}")]
         [Authorize(Roles = "Gerente")]
         public async Task<IActionResult> DeleteUsuario(int id)

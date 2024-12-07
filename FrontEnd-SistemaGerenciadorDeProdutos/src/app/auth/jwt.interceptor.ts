@@ -1,22 +1,35 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
-export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
+function getAuthToken(): string | null {
   const isBrowser =
     typeof window !== 'undefined' && typeof localStorage !== 'undefined';
 
   if (isBrowser) {
-    const token = localStorage.getItem('authToken');
-
-    if (token) {
-      const clonedRequest = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      return next(clonedRequest);
-    }
+    return localStorage.getItem('authToken');
   }
 
+  console.warn(
+    'JWT Interceptor: execução fora do navegador, localStorage não disponível.'
+  );
+  return null;
+}
+
+export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
+  const token = getAuthToken();
+
+  if (token) {
+    const clonedRequest = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log('JWT Interceptor: Token anexado à requisição.');
+    return next(clonedRequest);
+  }
+
+  console.warn(
+    'JWT Interceptor: Token não encontrado, requisição enviada sem autenticação.'
+  );
   return next(req);
 };

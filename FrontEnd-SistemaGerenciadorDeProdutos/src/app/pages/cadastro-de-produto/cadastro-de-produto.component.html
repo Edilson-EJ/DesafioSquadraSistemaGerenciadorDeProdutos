@@ -1,22 +1,33 @@
-<h1>Cadastro de Produto</h1>
-<form #produtoForm="ngForm" (ngSubmit)="onSubmit(produtoForm)">
-  <label for="nome">Nome:</label>
-  <input id="nome" name="nome" type="text" ngModel required />
+<div class="main-cadastro-produto">
+  <div class="titulo">
+    <h1>Cadastro de Produto</h1>
+  </div>
 
-  <label for="descricao">Descrição:</label>
-  <textarea id="descricao" name="descricao" ngModel></textarea>
+  <form [formGroup]="produtoForm" (ngSubmit)="onSubmit()">
+    <label for="nome">Nome:</label>
+    <input id="nome" formControlName="nome" type="text" />
 
-  <label for="status">Status:</label>
-  <select id="status" name="status" ngModel>
-    <option value="Em estoque">Em estoque</option>
-    <option value="Fora de estoque">Fora de estoque</option>
-  </select>
+    <label for="descricao">Descrição:</label>
+    <textarea id="descricao" formControlName="descricao"></textarea>
 
-  <label for="preco">Preço:</label>
-  <input id="preco" name="preco" type="number" step="0.01" ngModel required />
+    <label for="status">Status:</label>
+    <select id="status" formControlName="status">
+      <option value="Em estoque">Em estoque</option>
+      <option value="Fora de estoque">Fora de estoque</option>
+    </select>
 
-  <label for="quantidadeEstoque">Quantidade em Estoque:</label>
-  <input id="quantidadeEstoque" name="quantidadeEstoque" type="number" ngModel required />
+    <label for="preco">Preço:</label>
+    <input id="preco" formControlName="preco" type="number" step="0.01" />
 
-  <button type="submit">Cadastrar Produto</button>
-</form>
+    <label for="quantidadeEstoque">Quantidade em Estoque:</label>
+    <input id="quantidadeEstoque" formControlName="quantidadeEstoque" type="number" />
+
+
+    <div *ngIf="produtoForm.get('quantidadeEstoque')?.hasError('min') && produtoForm.get('quantidadeEstoque')?.touched">
+      A quantidade em estoque não pode ser negativa.
+    </div>
+
+    <button type="submit" [disabled]="produtoForm.invalid">Cadastrar Produto</button>
+    <button type="button" id="cancel" (click)="onCancel()">Cancelar</button>
+  </form>
+</div>

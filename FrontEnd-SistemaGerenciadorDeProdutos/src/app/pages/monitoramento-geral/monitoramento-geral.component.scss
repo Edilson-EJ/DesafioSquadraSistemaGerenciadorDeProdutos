@@ -1,4 +1,22 @@
-/* Estilo para o título */
+.mainMonitoamentoGeral {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 1444px;
+
+  .menuSuperior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h1 {
+      margin: 0;
+    }
+  }
+}
+
 h1 {
   text-align: center;
   margin-bottom: 20px;
@@ -8,7 +26,6 @@ h2 {
   margin-bottom: 15px;
 }
 
-/* Estilo da tabela */
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -34,13 +51,12 @@ h2 {
   }
 }
 
-/* Estilo para os botões */
 button {
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-right: 10px;
+  margin-left: auto;
 
   &.btn-update {
     background-color: #28a745;
@@ -54,7 +70,7 @@ button {
   &.btn-delete {
     background-color: #dc3545;
     color: white;
-
+    margin-left: 10px;
     &:hover {
       background-color: #c82333;
     }
@@ -68,31 +84,73 @@ button {
       background-color: #0056b3;
     }
   }
+
+  &.btn-logout {
+    background-color: #f44336;
+    color: white;
+
+    &:hover {
+      background-color: #d32f2f;
+    }
+  }
 }
 
-/* Responsividade */
+.menuSuperior,
+.addUsuario,
+.add-produto-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+
+  .btn-add {
+    background-color: #007bff;
+    color: white;
+    padding: 0.6rem 1.4rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+
+    &:hover {
+      background-color: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.6);
+    }
+
+    &:active {
+      background-color: #004085;
+      transform: translateY(1px);
+    }
+  }
+}
+
+.usuario,
+.produtos {
+  margin-top: 20px;
+
+  h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
 @media (max-width: 768px) {
-  table {
+  .table {
     font-size: 14px;
   }
 
   button {
     padding: 0.4rem 0.8rem;
   }
-}
 
-/* Estilos para o botão de logout */
-.btn-logout {
-  background-color: #f44336; /* Cor de fundo vermelha */
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  margin-top: 20px;
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: 5px;
-}
-
-.btn-logout:hover {
-  background-color: #d32f2f; /* Cor de fundo ao passar o mouse */
+  .btn-add {
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+  }
 }

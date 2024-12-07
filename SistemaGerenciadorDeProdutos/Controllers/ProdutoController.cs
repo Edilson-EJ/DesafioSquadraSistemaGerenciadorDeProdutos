@@ -18,7 +18,7 @@ namespace SistemaGerenciadorDeProdutos.Controllers
             _produtoService = produtoService;
         }
 
-        // GET: api/produto
+        // GET: /api/Produto/getProduto
         [HttpGet("getProduto")]
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Produto>>> GetProdutos()
@@ -27,7 +27,7 @@ namespace SistemaGerenciadorDeProdutos.Controllers
             return Ok(produtos);
         }
 
-        // GET: api/produto/{id}
+        // GET: /api/Produto/getProduto
         [HttpGet("getDetailProduto/{id}")]
         [AllowAnonymous]
         public async Task<ActionResult<Produto>> GetProduto(int id)
@@ -42,18 +42,18 @@ namespace SistemaGerenciadorDeProdutos.Controllers
             return Ok(produto);
         }
 
-        // POST: api/produto
+        // POST: /api/Produto/postProduto
         [HttpPost("postProduto")]
-        //[Authorize(Roles = "Gerente, Funcionario")]
+        [Authorize(Roles = "Gerente, Funcionario")]
         public async Task<ActionResult<Produto>> PostProduto(Produto produto)
         {
             await _produtoService.AdicionarProduto(produto);
             return CreatedAtAction(nameof(GetProduto), new { id = produto.Id }, produto);
         }
 
-        // PUT: api/produto/{id}
+        // PUT: /api/Produto/updateProduto/{id}
         [HttpPut("updateProduto/{id}")]
-        //[Authorize(Roles = "Gerente, Funcionario")]
+        [Authorize(Roles = "Gerente, Funcionario")]
         public async Task<IActionResult> PutProduto(int id, Produto produto)
         {
             if (id != produto.Id)

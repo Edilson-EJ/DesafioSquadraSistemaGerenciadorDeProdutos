@@ -1,34 +1,104 @@
-form {
-  display: flex;
-  flex-direction: column;
-  max-width: 400px;
-  margin: 0 auto;
+.main-cadastro-produto {
+  .titulo {
+    text-align: center;
+    margin-bottom: 20px;
 
-  label {
-    margin-top: 10px;
-    font-weight: bold;
+    h1 {
+      font-size: 24px;
+      color: #333;
+    }
   }
 
-  input,
-  textarea,
-  select,
-  button {
-    margin-top: 5px;
-    padding: 10px;
-    font-size: 14px;
+  form {
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-  }
+    border-radius: 8px;
+    background-color: #f9f9f9;
 
-  button {
-    margin-top: 15px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    cursor: pointer;
+    label {
+      margin-top: 15px;
 
-    &:hover {
+      font-weight: bold;
+      color: #555;
+    }
+
+    input,
+    textarea,
+    select {
+      margin-top: 5px;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 95%;
+      padding-left: 15px;
+    }
+
+    textarea {
+      min-height: 100px;
+      padding-top: 10px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 12px;
+      font-size: 16px;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
       background-color: #45a049;
+
+      &:hover {
+        background-color: #45a049;
+        transform: translateY(-2px);
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.6);
+      }
+
+      &:active {
+        background-color: #388e3c;
+        transform: translateY(1px);
+      }
+
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+    }
+
+    #cancel {
+      background-color: #f44336;
+      margin-top: 10px;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 4px;
+
+      &:hover {
+        background-color: #d32f2f;
+      }
+
+      &:active {
+        background-color: #c62828;
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 5px rgba(244, 67, 54, 0.6);
+      }
+    }
+
+    .error-message {
+      color: #d32f2f;
+      font-size: 14px;
+      margin-top: 10px;
     }
   }
 }

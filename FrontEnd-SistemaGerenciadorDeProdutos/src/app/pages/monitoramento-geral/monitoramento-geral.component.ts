@@ -27,11 +27,8 @@ export class MonitoramentoGeralComponent {
   ) {}
 
   ngOnInit(): void {
-    // Recupera o cargo do usuário armazenado no localStorage
     this.userRole = localStorage.getItem('userRole') || '';
-    console.log('função', this.userRole);
     if (!this.userRole) {
-      // Se o cargo não estiver presente no localStorage, redireciona para login
       this.router.navigate(['/login']);
     } else {
       this.loadProdutos();
@@ -41,7 +38,6 @@ export class MonitoramentoGeralComponent {
     }
   }
 
-  // Carregar produtos
   loadProdutos(): void {
     this.produtoAPIService.getProdutos().subscribe(
       (data) => {
@@ -53,32 +49,26 @@ export class MonitoramentoGeralComponent {
     );
   }
 
-  // Atualizar produto
   onUpdateProduto(produtoId: number): void {
     const produto = this.produtos.find((p) => p.id === produtoId);
     if (produto) {
       this.produtoAPIService.updateProduto(produtoId, produto).subscribe(
-        (updatedProduto) => {
-          console.log('Produto atualizado com sucesso:', updatedProduto);
+        () => {
           this.loadProdutos();
         },
         (error) => {
           console.error('Erro ao atualizar o produto:', error);
         }
       );
-    } else {
-      console.error('Produto não encontrado para atualização');
     }
   }
 
-  // Deletar produto (somente gerente)
   onDeleteProduto(produtoId: number): void {
     if (
       confirm(`Tem certeza que deseja excluir o produto com ID ${produtoId}?`)
     ) {
       this.produtoAPIService.deleteProduto(produtoId).subscribe(
         () => {
-          console.log('Produto deletado com sucesso');
           this.loadProdutos();
         },
         (error) => {
@@ -88,7 +78,6 @@ export class MonitoramentoGeralComponent {
     }
   }
 
-  // Carregar usuários (somente gerente)
   loadUsuarios(): void {
     this.usuarioAPIService.getUsuarios().subscribe(
       (data) => {
@@ -100,18 +89,14 @@ export class MonitoramentoGeralComponent {
     );
   }
 
-  // Atualizar usuário (somente gerente)
   onUpdateUsuario(userId: number): void {
     console.log(`Atualizar usuário com ID: ${userId}`);
-    // Lógica para atualizar o usuário
   }
 
-  // Deletar usuário (somente gerente)
   onDeleteUsuario(userId: number): void {
     if (confirm(`Tem certeza que deseja excluir o usuário com ID ${userId}?`)) {
       this.usuarioAPIService.deleteUsuario(userId).subscribe(
         () => {
-          console.log('Usuário deletado com sucesso');
           this.loadUsuarios();
         },
         (error) => {
@@ -121,17 +106,17 @@ export class MonitoramentoGeralComponent {
     }
   }
 
-  // Adicionar um novo usuário
   onAddUsuario(): void {
     this.router.navigate(['/cadastro-de-usuario']);
   }
 
+  onAddProduto(): void {
+    this.router.navigate(['/cadastro-de-produto']);
+  }
+
   onLogout(): void {
-    // Limpar o token e a função (role) armazenados no localStorage
     this.authAPIService.clearToken();
     localStorage.removeItem('userRole');
-
-    // Redirecionar para a página de login
     this.router.navigate(['/']);
   }
 }
