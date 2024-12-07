@@ -3,7 +3,6 @@
   <div class="parteSuperior">
     <h1>Lista de Produtos</h1>
 
-    <!-- Botão de Login -->
     <div class="toolbar">
       <button class="btn-login" [routerLink]="['/login']">Login</button>
     </div>
@@ -11,11 +10,9 @@
   </div>
 
 
-  <!-- Tabela de Produtos -->
   <table>
     <thead>
       <tr>
-        <th>ID</th>
         <th>Nome</th>
         <th>Descrição</th>
         <th>Status</th>
@@ -25,7 +22,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let produto of produtos">
-        <td>{{ produto.id }}</td>
+
         <td>{{ produto.nome }}</td>
         <td>{{ produto.descricao }}</td>
         <td>{{ produto.status }}</td>

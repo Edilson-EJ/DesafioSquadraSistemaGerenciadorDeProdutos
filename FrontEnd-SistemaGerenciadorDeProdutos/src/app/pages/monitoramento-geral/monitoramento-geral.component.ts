@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Produto } from '../../models/produto';
 import { Usuario } from '../../models/usuario';
 import { ProdutoAPIService } from '../../services/produto-api.service';
@@ -12,9 +12,9 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './monitoramento-geral.component.html',
-  styleUrl: './monitoramento-geral.component.scss',
+  styleUrls: ['./monitoramento-geral.component.scss'],
 })
-export class MonitoramentoGeralComponent {
+export class MonitoramentoGeralComponent implements OnInit {
   produtos: Produto[] = [];
   usuarios: Usuario[] = [];
   userRole: string = '';
@@ -27,14 +27,20 @@ export class MonitoramentoGeralComponent {
   ) {}
 
   ngOnInit(): void {
-    this.userRole = localStorage.getItem('userRole') || '';
+    if (typeof window !== 'undefined') {
+      this.userRole = localStorage.getItem('userRole') || '';
+    }
+
     if (!this.userRole) {
       this.router.navigate(['/login']);
-    } else {
-      this.loadProdutos();
-      if (this.userRole === 'gerente' || this.userRole === 'Gerente') {
-        this.loadUsuarios();
-      }
+      return;
+    }
+
+    this.loadProdutos();
+
+    // Carregar usuários apenas para gerentes
+    if (this.userRole.toLowerCase() === 'gerente') {
+      this.loadUsuarios();
     }
   }
 

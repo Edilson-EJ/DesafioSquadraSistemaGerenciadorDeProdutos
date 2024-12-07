@@ -1,4 +1,6 @@
-﻿namespace SistemaGerenciadorDeProdutos.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SistemaGerenciadorDeProdutos.Models
 {
     public class Produto
     {
@@ -7,10 +9,12 @@
         public string Nome { get; set; } = string.Empty;
         public string? Descricao { get; set; }
         public string Status { get; set; } = "Em estoque";
+
         public decimal Preco { get; set; }
+
+        [Range(0, int.MaxValue, ErrorMessage = "A quantidade deve ser um número positivo.")]
         public int QuantidadeEstoque { get; set; }
 
-        // Construtor
         public Produto() { }
 
         public Produto(int id, string nome, string? descricao, decimal preco, int quantidadeEstoque, string status = "Em estoque")
@@ -22,7 +26,5 @@
             QuantidadeEstoque = quantidadeEstoque;
             Status = status;
         }
-
-        
     }
 }

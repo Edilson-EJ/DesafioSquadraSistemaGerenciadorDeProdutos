@@ -183,7 +183,5 @@ public class Startup
 
         
 
-        // Seed de dados (caso necessário)
-        // DataInitializer.Seed(context);
     }
 }

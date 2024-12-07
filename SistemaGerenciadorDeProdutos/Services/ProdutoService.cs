@@ -29,9 +29,12 @@ namespace SistemaGerenciadorDeProdutos.Services
         }
 
         // Adicionar um novo produto
-        public async Task AdicionarProduto(Produto produto)
-        {
-            _context.Produtos.Add(produto);
+        public async Task AdicionarProduto(Produto produto) { 
+            if (produto.QuantidadeEstoque < 0) 
+            { 
+                throw new ArgumentException("A quantidade de estoque não pode ser negativa."); 
+            } 
+            _context.Produtos.Add(produto); 
             await _context.SaveChangesAsync();
         }
 

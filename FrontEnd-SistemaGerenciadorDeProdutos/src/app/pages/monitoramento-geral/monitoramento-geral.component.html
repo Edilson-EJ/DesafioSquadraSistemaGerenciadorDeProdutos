@@ -17,7 +17,6 @@
       <table class="table">
         <thead>
           <tr>
-            <th>ID</th>
             <th>Nome</th>
             <th>Email</th>
             <th>Ações</th>
@@ -25,7 +24,6 @@
         </thead>
         <tbody>
           <tr *ngFor="let usuario of usuarios">
-            <td>{{ usuario.id }}</td>
             <td>{{ usuario.nome }}</td>
             <td>{{ usuario.email }}</td>
             <td>
@@ -48,7 +46,6 @@
     <table class="table">
       <thead>
         <tr>
-          <th>ID</th>
           <th>Nome</th>
           <th>Descrição</th>
           <th>Status</th>
@@ -59,7 +56,6 @@
       </thead>
       <tbody>
         <tr *ngFor="let produto of produtos">
-          <td>{{ produto.id }}</td>
           <td>{{ produto.nome }}</td>
           <td>{{ produto.descricao }}</td>
           <td>{{ produto.status }}</td>

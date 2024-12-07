@@ -1,0 +1,44 @@
+{
+
+    "nome": "edilson",
+    "email": "edilson@adm.com",
+    "senhaHash": "root",
+    "funcao": "Gerente"
+  },
+  {
+
+    "nome": "Graves",
+    "email": "graves@fun.com",
+    "senhaHash": "root",
+    "funcao": "Funcionario"
+  },
+
+}
+
+[
+  {
+
+    "nome": "Produto A",
+    "descricao": "Descrição do Produto A",
+    "status": "Em estoque",
+    "preco": 29.99,
+    "quantidadeEstoque": 50
+  },
+  {
+
+    "nome": "Produto B",
+    "descricao": null,
+    "status": "Em estoque",
+    "preco": 15.49,
+    "quantidadeEstoque": 30
+  },
+  {
+    "nome": "Produto C",
+    "descricao": "Descrição do Produto C",
+    "status": "Fora de estoque",
+    "preco": 45.00,
+    "quantidadeEstoque": 0
+  }
+]
+
+
