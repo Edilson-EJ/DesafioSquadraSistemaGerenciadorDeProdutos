@@ -16,6 +16,7 @@ namespace SistemaGerenciadorDeProdutos.Controllers
             _authService = authService;
         }
 
+        // endpoint de login
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel login)
         {

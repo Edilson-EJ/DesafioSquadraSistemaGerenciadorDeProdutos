@@ -27,7 +27,7 @@ namespace SistemaGerenciadorDeProdutos.Controllers
             return Ok(produtos);
         }
 
-        // GET: /api/Produto/getProduto
+        // GET: /api/Produto/getDetailProduto/{id}
         [HttpGet("getDetailProduto/{id}")]
         [AllowAnonymous]
         public async Task<ActionResult<Produto>> GetProduto(int id)

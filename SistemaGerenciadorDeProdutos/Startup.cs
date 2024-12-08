@@ -76,7 +76,7 @@ public class Startup
             };
         });
 
-        // Configurações de Controllers
+       
         services.AddControllers();
 
         // Configuração do Swagger
@@ -121,7 +121,7 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppDbContext context)
     {
-        // Configurações de ambiente
+        
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
@@ -132,14 +132,11 @@ public class Startup
             app.UseHsts();
         }
 
-        // Autenticação e Autorização
         app.UseAuthentication();
-        // Configuração de rotas
         app.UseRouting();
         // Use a política CORS definida
         app.UseCors("AllowAngularApp");
         app.UseAuthorization();
-        // Configuração de endpoints
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();

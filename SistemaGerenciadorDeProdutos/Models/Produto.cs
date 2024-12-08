@@ -4,7 +4,7 @@ namespace SistemaGerenciadorDeProdutos.Models
 {
     public class Produto
     {
-        // Propriedades públicas para mapeamento do Entity Framework
+        
         public int Id { get; set; }
         public string Nome { get; set; } = string.Empty;
         public string? Descricao { get; set; }

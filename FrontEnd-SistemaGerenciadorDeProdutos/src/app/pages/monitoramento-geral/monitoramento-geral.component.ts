@@ -38,7 +38,6 @@ export class MonitoramentoGeralComponent implements OnInit {
 
     this.loadProdutos();
 
-    // Carregar usuários apenas para gerentes
     if (this.userRole.toLowerCase() === 'gerente') {
       this.loadUsuarios();
     }

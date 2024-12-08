@@ -32,7 +32,7 @@ namespace SistemaGerenciadorDeProdutos.Services
                 return null;
             }
 
-            // Criação dos Claims
+          
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, usuario.Nome),
@@ -46,9 +46,7 @@ namespace SistemaGerenciadorDeProdutos.Services
                 var jwtSettings = _configuration.GetSection("JwtSettings");
                 var secretKey = jwtSettings.GetValue<string>("SecretKey");
 
-                // Adicione logs para verificar valores
-                Console.WriteLine("Chave secreta do appsettings.json: " + secretKey);
-
+         
                 if (string.IsNullOrEmpty(secretKey))
                 {
                     throw new InvalidOperationException("A chave secreta JWT não está configurada.");
@@ -71,11 +69,7 @@ namespace SistemaGerenciadorDeProdutos.Services
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var jwtToken = tokenHandler.WriteToken(token);
 
-                // Logando a estrutura do token gerado
-                Console.WriteLine("Token gerado: " + jwtToken);
-
-                // Logando a chave usada na geração do token para comparação
-                Console.WriteLine("Chave secreta usada para assinar o token: " + secretKey);
+              
 
                 // Verifique a estrutura do JWT
                 if (string.IsNullOrEmpty(jwtToken) || !jwtToken.Contains('.'))
@@ -88,8 +82,6 @@ namespace SistemaGerenciadorDeProdutos.Services
             }
             catch (Exception ex)
             {
-                // Lide com a exceção, por exemplo, logando o erro.
-                Console.WriteLine("Erro ao gerar token: " + ex.Message); // Logando o erro
                 throw new InvalidOperationException("Erro ao gerar o token JWT.", ex);
             }
         }
